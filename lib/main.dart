@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockflow/src/pages/login/login_page.dart';
 import 'package:stockflow/src/pages/register/register_page.dart';
-
 void main() {
   runApp(const MyApp());
 }

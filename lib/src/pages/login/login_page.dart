@@ -114,6 +114,7 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
   Widget _textYourInfo(){
     return Container(
       margin: EdgeInsets.only(top: 40,bottom: 45),
