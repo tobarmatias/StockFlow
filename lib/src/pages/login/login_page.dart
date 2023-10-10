@@ -1,55 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockflow/src/pages/login/login_controller.dart';
+import 'package:udemy_flutter_delivery/src/pages/login/login_controller.dart';
 
 class LoginPage extends StatelessWidget {
 
-  LoginController cont = Get.put(LoginController());
+  LoginController con = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/img/backgroundcover.png'),
-          fit: BoxFit.cover,
-        )
+    return Scaffold(
+      bottomNavigationBar: Container(
+        height: 50,
+        child: _textDontHaveAccount(),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        bottomNavigationBar: Container(
-          height: 50,
-          child: _textDontHaveAccount(),
-        ),
-        body: Stack(
-          children: [
-            _boxForm(context),
-            Column(
-              children: [
-                _imageCover(),
-                _textAppName()
-              ],
-            )
-          ]
-        )
+      body: Stack( // POSICIONAR ELEMENTOS UNO ENCIMA DEL OTRO
+        children: [
+          _backgroundCover(context),
+          _boxForm(context),
+          Column( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO (VERTICAL)
+            children: [
+              _imageCover(),
+              _textAppName()
+            ],
+          ),
+        ],
       ),
     );
   }
-  //PRIVATE
-  Widget _textAppName(){
+
+  Widget _backgroundCover(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.42,
+      color: Colors.amber,
+    );
+  }
+
+  Widget _textAppName() {
     return Text(
-      'Tu Inventario Fácil',
+      'DELIVERY MYSQL',
       style: TextStyle(
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: Colors.black
       ),
     );
   }
-  Widget _boxForm(BuildContext context){
+
+  Widget _boxForm(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 40 ,
-      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.33, left: 50, right: 50),
+      height: MediaQuery.of(context).size.height * 0.45,
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35, left: 50, right: 50),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: <BoxShadow>[
@@ -64,111 +65,114 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             _textYourInfo(),
-            _textEmail(),
-            _textPass(),
+            _textFieldEmail(),
+            _textFieldPassword(),
             _buttonLogin()
           ],
         ),
       ),
     );
   }
-  Widget _textEmail(){
+
+  Widget _textFieldEmail() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.emailController,
+        controller: con.emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          hintText: 'Correo Electronico',
+          hintText: 'Correo electronico',
           prefixIcon: Icon(Icons.email)
         ),
       ),
     );
   }
-  Widget _textPass(){
+
+  Widget _textFieldPassword() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.passController,
+        controller: con.passwordController,
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
-            hintText: 'Contraseña',
-            prefixIcon: Icon(Icons.lock)
+          hintText: 'Contraseña',
+          prefixIcon: Icon(Icons.lock)
         ),
       ),
     );
   }
-  Widget _buttonLogin(){
+
+  Widget _buttonLogin() {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: ElevatedButton(
-        onPressed: () => cont.Login(),
-        child: Text(
-          'Logn',
-          style: TextStyle(
-            color: Colors.black
+          onPressed: () => con.login(),
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 15)
           ),
-        ),
+          child: Text(
+            'LOGIN',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          )
       ),
     );
   }
 
-  Widget _textYourInfo(){
+  Widget _textYourInfo() {
     return Container(
-      margin: EdgeInsets.only(top: 40,bottom: 45),
+      margin: EdgeInsets.only(top: 40, bottom: 45),
       child: Text(
-        'Inicia Sesión',
+        'INGRESA ESTA INFORMACION',
         style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 30
+          color: Colors.black,
         ),
       ),
     );
   }
 
-  Widget _textDontHaveAccount(){
-    return Row(
+  Widget _textDontHaveAccount() {
+    return Row( // UBICAR ELEMENTOS UNO AL LADO DEL OTRO (HORIZONTAL)
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          '¿No Tienes Cuenta?',
+          '¿No tienes cuenta?',
           style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 15
+            color: Colors.black,
+            fontSize: 17
           ),
         ),
         SizedBox(width: 7),
         GestureDetector(
-          onTap: () => cont.goToRegisterPage(),
+          onTap: () => con.goToRegisterPage(),
           child: Text(
-            'Registrate Aqui',
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 15
-            ),
+              'Registrate Aqui',
+              style: TextStyle(
+                  color: Colors.amber,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17
+              ),
           ),
-        )
+        ),
       ],
     );
   }
 
-  // PRIVATE
-  Widget _imageCover(){
+  // PRIVADO
+  Widget _imageCover() {
     return SafeArea(
       child: Container(
         margin: EdgeInsets.only(top: 20, bottom: 15),
         alignment: Alignment.center,
         child: Image.asset(
-          'assets/img/icono.png',
-          width: 150,
-          height: 150,
+          'assets/img/delivery.png',
+          width: 130,
+          height: 130,
         ),
       ),
-    );
+    ) ;
   }
 }

@@ -1,41 +1,82 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:udemy_flutter_delivery/src/models/response_api.dart';
+import 'package:udemy_flutter_delivery/src/models/user.dart';
+import 'package:udemy_flutter_delivery/src/providers/users_provider.dart';
 
-class LoginController extends GetxController{
+class LoginController extends GetxController {
+
+  User user = User.fromJson(GetStorage().read('user') ?? {});
 
   TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  void goToRegisterPage(){
+  UsersProvider usersProvider = UsersProvider();
+
+  void goToRegisterPage() {
     Get.toNamed('/register');
   }
 
-  void Login(){
+  void login() async {
     String email = emailController.text.trim();
-    String pass = passController.text.trim();
+    String password = passwordController.text.trim();
 
     print('Email ${email}');
-    print('Pass ${pass}');
+    print('Password ${password}');
 
-    if(isValidForm(email,pass)){
-      Get.snackbar('Formulario Valido', 'Bienvenido a Stock Flow');
+    if (isValidForm(email, password)) {
+
+      ResponseApi responseApi = await usersProvider.login(email, password);
+
+      print('Response Api: ${responseApi.toJson()}');
+
+      if (responseApi.success == true) {
+        GetStorage().write('user', responseApi.data); // DATOS DEL USUARIO EN SESION
+        User myUser = User.fromJson(GetStorage().read('user') ?? {});
+
+        print('Roles length: ${myUser.roles!.length}');
+
+        if (myUser.roles!.length > 1) {
+          goToRolesPage();
+        }
+        else { // SOLO UN ROL
+          goToClientHomePage();
+        }
+
+      }
+      else {
+        Get.snackbar('Login fallido', responseApi.message ?? '');
+      }
     }
   }
 
-  bool isValidForm(String email, String pass){
+  void goToClientHomePage() {
+    Get.offNamedUntil('/client/home', (route) => false);
+  }
 
-    if(email.isEmpty){
-      Get.snackbar('Formulario no Valido', 'Debes ingresar un email');
+  void goToRolesPage() {
+    Get.offNamedUntil('/roles', (route) => false);
+  }
+
+  bool isValidForm(String email, String password) {
+
+    if (email.isEmpty) {
+      Get.snackbar('Formulario no valido', 'Debes ingresar el email');
       return false;
     }
-    if(!GetUtils.isEmail(email)){
-      Get.snackbar('Formulario no Valido', 'El email no es Valido');
+
+    if (!GetUtils.isEmail(email)) {
+      Get.snackbar('Formulario no valido', 'El email no es valido');
       return false;
     }
-    if(pass.isEmpty){
-      Get.snackbar('Formulario no Valido', 'Debes ingresar una password');
+
+    if (password.isEmpty) {
+      Get.snackbar('Formulario no valido', 'Debes ingresar el password');
       return false;
     }
+
     return true;
   }
 

@@ -1,56 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockflow/src/pages/register/register_controller.dart';
+import 'package:udemy_flutter_delivery/src/pages/register/register_controller.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterController cont = Get.put(RegisterController());
+
+
+  RegisterController con = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/img/backgroundcover.png'),
-            fit: BoxFit.cover,
-          )
-      ),
-      child: Scaffold(
-          backgroundColor: Colors.transparent,
-          bottomNavigationBar: Container(
-            height: 50,
-            child:_textAlreadyHaveAccount(),
-          ),
-          body: Stack(
-              children: [
-                _boxForm(context),
-                Column(
-                  children: [
-                    _imageCover(),
-                  ],
-                )
-              ]
-          )
-      ),
-    );
-  }
-  Widget _imageCover(){
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.only(top: 20, bottom: 15),
-        alignment: Alignment.center,
-        child: Image.asset(
-          'assets/img/icono.png',
-          width: 150,
-          height: 150,
-        ),
+    return Scaffold(
+      body: Stack( // POSICIONAR ELEMENTOS UNO ENCIMA DEL OTRO
+        children: [
+          _backgroundCover(context),
+          _boxForm(context),
+          _imageUser(context),
+          _buttonBack()
+        ],
       ),
     );
   }
 
-  Widget _boxForm(BuildContext context){
+  Widget _buttonBack() {
+    return SafeArea(
+        child: Container(
+          margin: EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () => Get.back(),
+            icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 30,
+            ),
+          ),
+        )
+    );
+  }
+
+  Widget _backgroundCover(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 40 ,
-      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.33, left: 50, right: 50),
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.35,
+      color: Colors.amber,
+    );
+  }
+
+  Widget _boxForm(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.65,
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3, left: 50, right: 50),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: <BoxShadow>[
@@ -65,89 +63,80 @@ class RegisterPage extends StatelessWidget {
         child: Column(
           children: [
             _textYourInfo(),
-            _textEmail(),
-            _textName(),
-            _textLastName(),
-            _textPhone(),
-            _textPass(),
-            _textConfirmPass(),
-            _buttonRegister()
+            _textFieldEmail(),
+            _textFieldName(),
+            _textFieldLastName(),
+            _textFieldPhone(),
+            _textFieldPassword(),
+            _textFieldConfirmPassword(),
+            _buttonRegister(context)
           ],
         ),
       ),
     );
   }
-  Widget _textYourInfo(){
-    return Container(
-      margin: EdgeInsets.only(top: 40,bottom: 45),
-      child: Text(
-        'Registrate',
-        style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 30
-        ),
-      ),
-    );
-  }
 
-  Widget _textEmail(){
+  Widget _textFieldEmail() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.emailController,
+        controller: con.emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-            hintText: 'Correo Electronico',
+            hintText: 'Correo electronico',
             prefixIcon: Icon(Icons.email)
         ),
       ),
     );
   }
-  Widget _textName(){
+
+  Widget _textFieldName() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.nameController,
+        controller: con.nameController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            hintText: 'Nombres',
+            hintText: 'Nombre',
             prefixIcon: Icon(Icons.person)
         ),
       ),
     );
   }
-  Widget _textLastName(){
+
+  Widget _textFieldLastName() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.lastnameController,
+        controller: con.lastnameController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            hintText: 'Apellidos',
+            hintText: 'Apellido',
             prefixIcon: Icon(Icons.person_outline)
         ),
       ),
     );
   }
-  Widget _textPhone(){
+
+  Widget _textFieldPhone() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.phoneController,
+        controller: con.phoneController,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
-            hintText: 'Teléfono',
+            hintText: 'Telefono',
             prefixIcon: Icon(Icons.phone)
         ),
       ),
     );
   }
-  Widget _textPass(){
+
+  Widget _textFieldPassword() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.passController,
+        controller: con.passwordController,
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
@@ -157,11 +146,12 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
-  Widget _textConfirmPass(){
+
+  Widget _textFieldConfirmPassword() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        controller: cont.confirmpassController,
+        controller: con.confirmPasswordController,
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
@@ -171,46 +161,58 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
-  Widget _buttonRegister(){
+
+  Widget _buttonRegister(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: ElevatedButton(
-        onPressed: () => cont.Register(),
-        child: Text(
-          'Register',
-          style: TextStyle(
-              color: Colors.black
+          onPressed: () => con.register(context),
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 15)
           ),
+          child: Text(
+            'REGISTRARSE',
+            style: TextStyle(
+                color: Colors.black
+            ),
+          )
+      ),
+    );
+  }
+
+  Widget _imageUser(BuildContext context) {
+
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(top: 25),
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          onTap: () => con.showAlertDialog(context),
+          child: GetBuilder<RegisterController> (
+            builder: (value) => CircleAvatar(
+              backgroundImage: con.imageFile != null
+                  ? FileImage(con.imageFile!)
+                  : AssetImage('assets/img/user_profile.png') as ImageProvider,
+              radius: 60,
+              backgroundColor: Colors.white,
+            ),
+          )
         ),
       ),
     );
   }
-  Widget _textAlreadyHaveAccount(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          '¿Ya Tienes tu Cuenta?',
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 15
-          ),
+
+  Widget _textYourInfo() {
+    return Container(
+      margin: EdgeInsets.only(top: 40, bottom: 30),
+      child: Text(
+        'INGRESA ESTA INFORMACION',
+        style: TextStyle(
+          color: Colors.black,
         ),
-        SizedBox(width: 7),
-        GestureDetector(
-          onTap: () => cont.goToLoginPage(),
-          child: Text(
-            'Inicia Sesión Aqui',
-            style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-                fontSize: 15
-            ),
-          ),
-        )
-      ],
+      ),
     );
   }
+
 }

@@ -4,8 +4,20 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Necesito permisos para acceder a la galeria de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Necesito permisos para acceder a la camara</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Necesito permisos para acceder al microfono del celular</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>tel</string>
+    </array>
 	<key>CFBundleDisplayName</key>
-	<string>Stockflow</string>
+	<string>Udemy Flutter Delivery</string>
+
+
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +25,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>stockflow</string>
+	<string>udemy_flutter_delivery</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,9 +53,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
